@@ -11,6 +11,9 @@ set ttyfast
 set encoding=utf-8
 set fileencoding=utf-8
 
+" Do not make mouse highlighting convert to visual mode
+set mouse-=a
+
 "Set titlebar to file name
 let &titlestring = "vim: " . expand("%:t")
 if &term == "screen"
@@ -82,17 +85,24 @@ set statusline+=\ %c:%l/%L(%p%%)                " Col, line X of Y [percent of f
 "set statusline+=\ [%b][0x%B]\                   " ASCII and byte code under cursor
 
 
+" File format specific things.
+au FileType xml set equalprg=xmllint\ --format\ -
+au FileType json set equalprg=json_pp\ -
+
 
 
 " rest of this stolen liberally from Damian Conway
 
 " mark 81st character in a line
-highlight ColorColumn ctermbg=blue
-call matchadd('ColorColumn', '\%81v', 100)
+"highlight ColorColumn ctermbg=blue
+"call matchadd('ColorColumn', '\%81v', 100)
 
 " Make tabs, trailing whitespace, and non-breaking spaces visible
 exec "set listchars=tab:\uBB\uBB,trail:\uB7,nbsp:~"
 set list
+noremap <F5> :set list! list?<CR>
+inoremap <F5> <C-o>:set list! list?<CR>
+cnoremap <F5> <C-c>:set list! list?<CR>
 
 " highlight on next
 nnoremap <silent> n n:call HLNext(0.4)<cr>
